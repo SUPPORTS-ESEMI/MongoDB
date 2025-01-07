@@ -1,6 +1,6 @@
 # Récupérer les sources dans le dépôt
 
-Les données pour révisier [sample_weatherdata](./NoSQL/work/mongodb-sample-databases/sample_weatherdata/data.json)
+Les données pour révisier [sample_weatherdata](./work/mongodb-sample-databases/sample_weatherdata/data.json)
 
 ## Liste des exercices 
 
