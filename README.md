@@ -9,6 +9,26 @@ Les données pour révisier [sample_weatherdata](./work/mongodb-sample-databases
 
 ## Installation dans Docker 
 
+Placez les données dans le dossier data sur votre machine hôte, ces données seront dans le dossier `/data/db` dans le conteneur.
+
+```yaml
+services:
+
+  mongo:
+    image: mongo:latest
+    container_name: docker_mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+    volumes: 
+      - ./data:/data/db
+
+```
+
+Connectez-vous dans votre conteneur, puis créez la base de données `sample_weatherdata`, la collection `data` et insérez les données à l'aide de la commande suivante, attention aux options de cette commande, ici vous avez théoriquement un username et un password dans Mongo.
+
 ```bash
 docker exec -it docker_mongo bash
 
@@ -24,13 +44,14 @@ mongoimport --db sample_weatherdata \
 
 ## Installation sans Docker 
 
+Placez les données dans un dossier `sample_weatherdata` et utilisez la commande `mongoimport` théoriquement vous n'avez pas de mot de passe pour une installation dans votre machine locale.
+
 ```bash
 mongoimport --db sample_weatherdata \
             --collection data \
             --drop \
             --jsonArray \
-            --file data/db/sample_weatherdata/data.json
-
+            --file sample_weatherdata/data.json
 ```
 
 ## vérifiez que les données sont présentes
@@ -41,6 +62,8 @@ db.data.find().pretty()
 ```
 
 ## Structure des données
+
+[Documentation](./DOC.md)
 
 ```json
 {
