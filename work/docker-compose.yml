@@ -1,0 +1,12 @@
+services:
+
+  mongo:
+    image: mongo:latest
+    container_name: docker_mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+    volumes: 
+      - ./data:/data/db
