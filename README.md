@@ -29,7 +29,7 @@ mongoimport --db sample_weatherdata \
             --collection data \
             --drop \
             --jsonArray \
-            --file data/db/sample_weatherdata/data.json
+            --file sample_weatherdata/data.json
 
 ```
 
