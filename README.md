@@ -4,7 +4,8 @@ Les données pour révisier [sample_weatherdata](./work/mongodb-sample-databases
 
 ## Liste des exercices 
 
-1. Révisions find et aggregate : [revision](./NoSQL/Revisions/Exercices.md)
+1. Révisions find et aggregate : [revision](./Revisions/Exercices_find_aggregate.md)
+2. CRUD [revision](./Revisions/Exercices_CRUD.md)
 
 ## Installation dans Docker 
 
