@@ -84,21 +84,30 @@ db.students.find({ "courses" : { $nin : ["Algorithms"] } },  {_id: 0, "courses" 
 **Calculer la moyenne des GPA pour chaque major :**
 - Écrivez une requête d'agrégation pour calculer la moyenne des GPA pour chaque major.
 ```js
-
+db.students.aggregate([
+  { $group: { _id: "$major", avgGPA: { $avg: "$gpa" } } }, // premier pipe
+  { $project : { _id : 1 , avgGPA : { $round : ["$avgGPA", 2 ]} } } // deuxième pipe pour faire les arrondis sur la sortie du premier pipe
+]) 
 ```
 
 ## Exercice 2
 **Compter le nombre d'étudiants par ville :**
 - Écrivez une requête d'agrégation pour compter le nombre d'étudiants pour chaque ville.
 ```js
-
+db.students.aggregate([
+    { $group : { _id :  "$address.city",  "sum_student" : { $sum : 1 }  } }
+])
 ```
 
 ## Exercice 3
 **Trouver l'étudiant avec le GPA le plus élevé :**
 - Écrivez une requête d'agrégation pour trouver l'étudiant ayant le GPA le plus élevé.
 ```js
-
+db.students.aggregate([
+    { $project : {  _id : 0, "gpa" : 1,  "name" : 1} },
+    { $sort : { "gpa" : -1 } },
+    { $limit : 1 } 
+])
 ```
 
 ## Exercice 4
@@ -106,27 +115,66 @@ db.students.find({ "courses" : { $nin : ["Algorithms"] } },  {_id: 0, "courses" 
 - Écrivez une requête d'agrégation pour lister tous les cours uniques suivis par les étudiants.
 ```js
 
+// Combien d'étudiant par matière
+db.students.aggregate([
+    { $unwind: "$courses" }, 
+    {
+        $group: {
+            _id: "$courses",   // Regroupe par le nom du cours
+            "total" : { $sum : 1 } // compte le nombre répétition de l'item cours
+        }
+    },
+])
+
+// avoir tous les différents suivis par les étudiants avec la méthode distinct 
+db.students.distinct("courses")
+
+// de manière équivalente on peut calculer le nombre de cours distincts avec aggregate
+db.students.aggregate([
+    { $unwind: "$courses" }, 
+    {
+        $group: {
+            _id: "$courses",   // Regroupe par le nom du cours
+        }
+    },
+])
 ```
 
 ## Exercice 5
 **Calculer le nombre total de cours suivis par tous les étudiants :**
 - Écrivez une requête d'agrégation pour calculer le nombre total de cours suivis par tous les étudiants.
 ```js
-
+db.students.aggregate([
+    { $unwind: "$courses" }, 
+    {
+        $group: {
+            _id: "$courses",   // Regroupe par le nom du cours
+            "total" : { $sum : 1 } // compte le nombre répétition de l'item cours
+        }
+    },
+    { $group : { _id : null , total :  { $sum : "$total" } } }
+])
 ```
 
 ## Exercice 6
 **Trouver le major avec le plus grand nombre d'étudiants :**
 - Écrivez une requête d'agrégation pour trouver le major ayant le plus grand nombre d'étudiants.
 ```js
-
+db.students.aggregate([
+    { $group: { _id : "$major" ,  total : { $sum : 1 } } },
+    { $sort : { total : -1 } },
+    { $limit :1 }
+])
 ```
 
 ## Exercice 7
 **Calculer l'âge moyen des étudiants par major :**
 - Écrivez une requête d'agrégation pour calculer l'âge moyen des étudiants pour chaque major.
 ```js
-
+db.students.aggregate([
+    { $group: { _id : "$major" ,  avgAge : { $avg : "$age" } } },
+    { $project : { _id : 1 , avgAge : { $round : ["$avgAge", 2 ]} } } // deuxième pipe pour faire les arrondis sur la sortie du premier pipe
+])
 ```
 
 ## Exercice 8
