@@ -7,17 +7,6 @@ mongosh -u root -p
 use university
 
 db.createCollection('sudents')
-
- "_id": 3,
-        "name": "John",
-        "address": {
-            "street": "Main Street",
-            "city": "New York",
-            "zip": "10001"
-        },
-        "grade": "bachelor 3",
-        "notes": [12, 16, 14],
-        "relationship": [2, 4]
 */
 
 db.students.insertMany([
@@ -88,4 +77,34 @@ db.students.insertMany([
     }
 ])
 
+db.students.countDocuments() // 5 documents
 
+
+db.students.insertMany([
+    {
+        "name": "Khadidja ",
+        "age": 25,
+        "major": "Computer Science",
+        "gpa": 13.5,
+        "courses": ["Chemistry", "Organic Chemistry", "Physical Chemistry", "IA"],
+        "notes": [12, 13, 14],
+        "grade": "master 5",
+        "address": {
+            "city": "Miami",
+            "zip": "33101"
+        }
+    },
+    {
+        "name": "Idir",
+        "age": 25,
+        "major": "Computer Science",
+        "gpa": 13.5,
+        "courses": ["Chemistry", "Physical Chemistry", "IA"],
+        "notes": [12, 13, 14],
+        "grade": "master 5",
+        "address": {
+            "city": "Miami",
+            "zip": "33101"
+        }
+    }
+])
