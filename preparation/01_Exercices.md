@@ -176,24 +176,3 @@ db.students.aggregate([
     { $project : { _id : 1 , avgAge : { $round : ["$avgAge", 2 ]} } } // deuxième pipe pour faire les arrondis sur la sortie du premier pipe
 ])
 ```
-
-## Exercice 8
-**Lister les étudiants et leurs cours, triés par GPA décroissant :**
-- Écrivez une requête d'agrégation pour lister tous les étudiants et leurs cours, triés par GPA (`Grade Point Average`) décroissant.
-```js
-
-```
-
-## Exercice 9
-**Calculer le nombre moyen de cours suivis par les étudiants de chaque major :**
-- Écrivez une requête d'agrégation pour calculer le nombre moyen de cours suivis par les étudiants de chaque major.
-```js
-
-```
-
-## Exercice 10
-**Trouver les étudiants ayant le GPA le plus élevé dans chaque major :**
-- Écrivez une requête d'agrégation pour trouver les étudiants ayant le GPA le plus élevé dans chaque major.
-```js
-
-```
