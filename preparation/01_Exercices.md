@@ -4,60 +4,78 @@
 **Trouver tous les étudiants majeurs en "Computer Science" :**
 - Écrivez une requête pour trouver tous les étudiants dont le major (`spécialisation`) est "Computer Science".
 ```js
+db.students.find(
+    {
+        "major":"Computer Science"
+    }, 
+    { _id : 0 }
+)
 ```
 
 ## Exercice 2
 **Trouver les étudiants âgés de plus de 22 ans :**
 - Écrivez une requête pour trouver tous les étudiants âgés de plus de 22 ans.
 ```js
+db.students.find({ age: { $gt: 22 } })
 ```
 
 ## Exercice 3
 **Trouver les étudiants qui suivent le cours "Math" :**
 - Écrivez une requête pour trouver tous les étudiants qui suivent le cours "Math".
 ```js
+db.students.find( { courses : { $in : ['Math'] } } )
 ```
 
 ## Exercice 4
 **Trouver les étudiants vivant à "New York" :**
 - Écrivez une requête pour trouver tous les étudiants vivant à "New York".
 ```js
+db.students.find({ "address.city" : "New York"  })
 ```
 
 ## Exercice 5
 **Trouver les étudiants ayant un GPA (Grade Point Average) supérieur à 3.7 :**
 - Écrivez une requête pour trouver tous les étudiants ayant un GPA supérieur à 3.7.
 ```js
+db.students.find({ "gpa" : { $gt: 3.7 } })
 ```
 
 ## Exercice 6
 **Trouver les étudiants dont le nom commence par "A" :**
 - Écrivez une requête pour trouver tous les étudiants dont le nom commence par la lettre "A".
 ```js
+db.students.find({ "name" : { $regex: "^A" } })
 ```
 
 ## Exercice 7
 **Trouver les étudiants qui ne suivent pas le cours "Biology" :**
 - Écrivez une requête pour trouver tous les étudiants qui ne suivent pas le cours "Biology".
 ```js
+db.students.find({ courses : { $ne : "Biology" } })
+db.students.find({ courses : { $nin : ["Biology"] } })
 ```
 
 ## Exercice 8
 **Trouver les étudiants ayant exactement 3 cours :**
 - Écrivez une requête pour trouver tous les étudiants qui suivent exactement 3 cours.
 ```js
+db.students.find({ courses : { $size : 3 } })
 ```
 
 ## Exercice 9
 **Trouver les étudiants dont le major est "Mathematics" ou "Physics" :**
 - Écrivez une requête pour trouver tous les étudiants dont le major est soit "Mathematics" soit "Physics".
 ```js
+db.students.find({ "major" : { $in : ["Mathematics", "Physics" ] } }, {_id : 0, major : 1})
+db.students.find({  }, {_id : 0, major : 1})
 ```
 
 ## Exercice 10
 **Trouver les étudiants qui n'ont pas de cours "Algorithms" :**
 - Écrivez une requête pour trouver tous les étudiants qui ne suivent pas le cours "Algorithms".
 ```js
+db.students.find({ "courses" : { $ne : "Algorithms" } }, {_id: 0, "courses" : 1 })
+db.students.find({ "courses" : { $nin : ["Algorithms"] } },  {_id: 0, "courses" : 1 })
 ```
 
 # Exercices avec `aggregate`
