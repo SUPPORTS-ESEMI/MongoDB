@@ -4,6 +4,12 @@
 **Trouver tous les étudiants majeurs en "Computer Science" :**
 - Écrivez une requête pour trouver tous les étudiants dont le major (`spécialisation`) est "Computer Science".
 ```js
+db.students.find(
+    {
+        "major":"Computer Science"
+    }, 
+    { _id : 0 }
+)
 ```
 
 ## Exercice 2
