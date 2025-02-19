@@ -176,3 +176,90 @@ db.students.aggregate([
     { $project : { _id : 1 , avgAge : { $round : ["$avgAge", 2 ]} } } // deuxième pipe pour faire les arrondis sur la sortie du premier pipe
 ])
 ```
+
+## Exercice 8
+**Lister les étudiants et leurs cours, triés par GPA décroissant :**
+- Écrivez une requête d'agrégation pour lister tous les étudiants et leurs cours, triés par GPA décroissant.
+
+```js
+db.students.aggregate([
+    { $sort: { gpa: -1 } }, // premier pipe
+    { $project: { name: 1, courses: 1, gpa: 1 } } // deuxième pipe
+])
+```
+
+
+## Exercice 9
+**Calculer le nombre moyen de cours suivis par les étudiants de chaque major :**
+- Écrivez une requête d'agrégation pour calculer le nombre moyen de cours suivis par les étudiants de chaque major.
+
+```js
+// de la moyenne du nombre de cours par major
+db.students.aggregate([
+    { $group: { _id: "$major", averageCourseCount: { $avg: { $size : "$courses"} } } } ,// nombre moyen
+    { $project : { _id : 1 , averageCourseCount : { $round : ["$averageCourseCount", 2 ]} } }
+])
+
+db.students.aggregate([
+    { 
+        $group: { 
+            _id: "$major",
+            itemCourses: { $push:  "$courses" }
+        }
+    }
+])
+
+/*
+[
+  {
+    _id: 'Biology',
+    itemCourses: [ [ 'Biology', 'Genetics', 'Biochemistry' ] ] // 3 la moyenne c'est 3
+  },
+  {
+    _id: 'Computer Science',
+    // moyenne du nombre de cours 3.33
+    itemCourses: [
+      [ 'Math', 'Database Systems', 'Algorithms' ],            // 3
+      [ 'Chemistry', 'Organic Chemistry', 'Physical Chemistry', 'IA' ],  // 4
+      [ 'Chemistry', 'Physical Chemistry', 'IA' ]  // 3
+    ]
+  },
+  {
+    _id: 'Mathematics',
+    // moyenne des cours 3
+    itemCourses: [ [ 'Math', 'Calculus', 'Linear Algebra' ] ]
+  },
+  {
+    _id: 'Chemistry',
+     // moyenne des cours 3
+    itemCourses: [ [ 'Chemistry', 'Organic Chemistry', 'Physical Chemistry' ] ]
+  },
+  {
+    _id: 'Physics',
+     // moyenne des cours 3
+    itemCourses: [ [ 'Physics', 'Quantum Mechanics', 'Electromagnetism' ] ]
+  }
+]
+
+// regardez le nombre d'étudiants qui suivent la major Computer Science
+db.students.find( { major : "Computer Science"} , {_id : 0 , courses : 1, major : 1, name : 1 } )
+*/
+```
+
+## Exercice 10
+**Trouver les étudiants ayant le GPA le plus élevé dans chaque major :**
+- Écrivez une requête d'agrégation pour trouver les étudiants ayant le GPA le plus élevé dans chaque major.
+
+```js
+// attention chaque gpa est ordonnées par ordre décroissant.
+db.students.aggregate([
+    { $sort: { gpa: -1 } },
+    { $group: { _id: "$major", topStudent: { $first: "$name" }, topGPA: { $first: "$gpa" } } }
+])
+
+
+db.students.aggregate([
+    { $sort: { gpa: -1 } },
+    { $group: { _id: "$major", topStudent: { $first: "$name" }, gpas: { $push: "$gpa" } } }
+])
+```
